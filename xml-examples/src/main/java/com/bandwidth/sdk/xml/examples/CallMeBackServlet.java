@@ -57,30 +57,36 @@ public class CallMeBackServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ExamplesUtil.displayParameters(logger, req);
 
-        String path = req.getPathInfo();
+        String path = getRoute(req);
         logger.fine(String.format("Routing path: [%s]", path));
 
         RouteHandler handler = postRoutes.get(path);
         if(handler == null) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().write("Cannot do GET on " + path);
+        } else {
+            handler.process(req, resp);
         }
-        handler.process(req, resp);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ExamplesUtil.displayParameters(logger, req);
 
-        String path = req.getPathInfo();
+        String path = getRoute(req);
         logger.fine(String.format("Routing path: [%s]", path));
 
         RouteHandler handler = getRoutes.get(path);
         if(handler == null) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().write("Cannot do GET on " + path);
+        } else {
+            handler.process(req, resp);
         }
-        handler.process(req, resp);
+    }
+
+    private static String getRoute(HttpServletRequest req) {
+        return req.getRequestURI().replace(req.getServletPath(), "");
     }
 
     private static class RootRouteHandler implements RouteHandler {
