@@ -34,7 +34,7 @@ import com.bandwidth.sdk.model.events.*;
  */
 public class ChaosCorpServlet extends HttpServlet {
 	public static final Logger logger = Logger
-			.getLogger(com.bandwidth.sdk.examples.HelloFlipperServlet.class.getName());
+			.getLogger(com.bandwidth.sdk.examples.ChaosCorpServlet.class.getName());
 
 	// Setup logging programmatically to make initial deployment easier. Replace
 	// this with logging config

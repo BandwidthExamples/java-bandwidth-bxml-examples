@@ -44,4 +44,14 @@
 		<servlet-name>GatherComplete</servlet-name>
 		<url-pattern>/gatherComplete</url-pattern>
 	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>CallMeBack</servlet-name>
+		<servlet-class>com.bandwidth.sdk.xml.examples.CallMeBackServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>GatherComplete</servlet-name>
+		<url-pattern>/callMeBack</url-pattern>
+	</servlet-mapping>
 </web-app>
