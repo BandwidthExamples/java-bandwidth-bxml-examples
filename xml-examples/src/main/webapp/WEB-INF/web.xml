@@ -24,4 +24,24 @@
 	   <servlet-name>Transfer</servlet-name>
 	   <url-pattern>/transfer</url-pattern>
 	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Gather</servlet-name>
+		<servlet-class>com.bandwidth.sdk.xml.examples.GatherServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Gather</servlet-name>
+		<url-pattern>/gather</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>GatherComplete</servlet-name>
+		<servlet-class>com.bandwidth.sdk.xml.examples.GatherCompleteServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>GatherComplete</servlet-name>
+		<url-pattern>/gatherComplete</url-pattern>
+	</servlet-mapping>
 </web-app>

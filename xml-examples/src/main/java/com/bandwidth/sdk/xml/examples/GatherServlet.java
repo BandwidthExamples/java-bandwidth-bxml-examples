@@ -1,12 +1,12 @@
 package com.bandwidth.sdk.xml.examples;
 
 import com.bandwidth.sdk.exception.XMLInvalidAttributeException;
-import com.bandwidth.sdk.exception.XMLInvalidTagContentException;
 import com.bandwidth.sdk.exception.XMLMarshallingException;
 import com.bandwidth.sdk.xml.Response;
-import com.bandwidth.sdk.xml.elements.PlayAudio;
-import com.bandwidth.sdk.xml.elements.Redirect;
+import com.bandwidth.sdk.xml.elements.Gather;
+import com.bandwidth.sdk.xml.elements.Hangup;
 import com.bandwidth.sdk.xml.elements.SpeakSentence;
+import com.bandwidth.sdk.xml.elements.Transfer;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,30 +16,36 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class MainMenuServlet extends HttpServlet {
+public class GatherServlet extends HttpServlet {
     public static final Logger logger = Logger
-            .getLogger(MainMenuServlet.class.getName());
+            .getLogger(GatherServlet.class.getName());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        logger.info("get request /mainmenu");
+        logger.info("get request /gather");
 
         try {
             Response response = new Response();
-            SpeakSentence speakSentence =
-                    new SpeakSentence("Redirecting your call, please wait.", "paul", "male", "en");
 
-            PlayAudio playAudio = new PlayAudio("http://www.mediacollege.com/audio/tone/files/100Hz_44100Hz_16bit_05sec.mp3");
-            Redirect redirect = new Redirect("/transfer", 10000);
+            SpeakSentence speakSentence = new SpeakSentence("Hi, we will handle your call.", "paul", "male", "en_US");
+
+            SpeakSentence speakSentenceWithinGather =
+                    new SpeakSentence("Please press a number.", "paul", "male", "en_US");
+            Gather gather = new Gather("/gatherComplete", 1000, "#", 1, 5000, "true", speakSentenceWithinGather);
+
+            // The verbs after gather will only be handled if no BaML is returned on the gather requestUrl
+            // or if no digits are pressed.
+            Hangup hangup = new Hangup();
 
             response.add(speakSentence);
-            response.add(playAudio);
-            response.add(redirect);
+            response.add(gather);
+            response.add(new SpeakSentence("Good bye!", "paul", "male", "en_US"));
+            response.add(hangup);
 
             resp.setContentType("application/xml");
             resp.getWriter().print(response.toXml());
-        } catch (XMLInvalidAttributeException | XMLInvalidTagContentException e) {
+        } catch (XMLInvalidAttributeException e) {
             logger.log(Level.SEVERE, "invalid attribute or value", e);
         } catch (XMLMarshallingException e) {
             logger.log(Level.SEVERE, "invalid xml", e);

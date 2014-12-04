@@ -1,10 +1,11 @@
 package com.bandwidth.sdk.xml.examples;
 
 import com.bandwidth.sdk.exception.XMLInvalidAttributeException;
-import com.bandwidth.sdk.exception.XMLInvalidTagContentException;
 import com.bandwidth.sdk.exception.XMLMarshallingException;
 import com.bandwidth.sdk.xml.Response;
-import com.bandwidth.sdk.xml.elements.*;
+import com.bandwidth.sdk.xml.elements.Hangup;
+import com.bandwidth.sdk.xml.elements.SpeakSentence;
+import com.bandwidth.sdk.xml.elements.Transfer;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,12 +16,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class TransferServlet extends HttpServlet {
-	public static final Logger logger = Logger
-			.getLogger(TransferServlet.class.getName());
+    public static final Logger logger = Logger
+            .getLogger(TransferServlet.class.getName());
 
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
         logger.info("get request /transfer");
 
         try {
@@ -45,5 +46,5 @@ public class TransferServlet extends HttpServlet {
             logger.log(Level.SEVERE, "invalid xml", e);
         }
 
-	}
+    }
 }
