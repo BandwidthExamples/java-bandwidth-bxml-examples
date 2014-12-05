@@ -17,6 +17,7 @@ public class PropertiesReader {
     public enum CatapultProperties {
         CallOutgoingNumber("catapult.call.outgoing.number", phoneNumberPattern),
         CallIncomingNumber("catapult.call.incoming.number", phoneNumberPattern),
+        MessageOutgoingNumber("catapult.message.outgoing.number", phoneNumberPattern),
         MessageIncomingNumber("catapult.message.incoming.number", phoneNumberPattern);
 
         private String name;

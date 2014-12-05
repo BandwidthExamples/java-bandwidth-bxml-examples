@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 
 import static com.bandwidth.sdk.xml.examples.util.PropertiesReader.CatapultProperties.CallOutgoingNumber;
 import static com.bandwidth.sdk.xml.examples.util.PropertiesReader.CatapultProperties.MessageIncomingNumber;
+import static com.bandwidth.sdk.xml.examples.util.PropertiesReader.CatapultProperties.MessageOutgoingNumber;
 
 /**
  * This BaML app is a callback event server for the Bandwidth App Platform SDK.
@@ -117,7 +118,7 @@ public class CallMeBackServlet extends HttpServlet {
                 SpeakSentence absentSpeech = new SpeakSentence("I'm currently on vacation, I'll be back soon.",
                         "paul", "male", "en");
 
-                String messageFrom = properties.getCatapultProperty(CallOutgoingNumber);
+                String messageFrom = properties.getCatapultProperty(MessageOutgoingNumber);
                 String messageTo = properties.getCatapultProperty(MessageIncomingNumber);
 
                 SendMessage sendMessage = new SendMessage(messageFrom, messageTo, message);
@@ -156,7 +157,7 @@ public class CallMeBackServlet extends HttpServlet {
                 Event event = EventBase.createEventFromString(body);
                 if (event instanceof SmsEvent) {
                     SmsEvent sms = (SmsEvent) event;
-                    mapOfSmsCallbacks.put(sms.getId(), sms);
+                    mapOfSmsCallbacks.put(sms.getProperty("messageId"), sms);
                 } else {
                     logger.warning("Got a different event than SmsEvent on /message");
                 }
