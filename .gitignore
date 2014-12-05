@@ -4,6 +4,4 @@ repo
 .classpath
 .project
 .DS_Store
-xml-examples/bandwidth-xml-examples.iml
-api-examples/bandwidth-xml-examples.iml
-examples.iml
+.iml
