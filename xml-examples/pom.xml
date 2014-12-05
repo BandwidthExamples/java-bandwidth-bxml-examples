@@ -18,6 +18,12 @@
     </properties>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/webapp/WEB-INF</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <!-- This plugin is still org.mortbay even though Jetty 8+ is org.eclipse -->

@@ -10,6 +10,7 @@ import com.bandwidth.sdk.xml.elements.Hangup;
 import com.bandwidth.sdk.xml.elements.SendMessage;
 import com.bandwidth.sdk.xml.elements.SpeakSentence;
 import com.bandwidth.sdk.xml.examples.util.ExamplesUtil;
+import com.bandwidth.sdk.xml.examples.util.PropertiesReader;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,7 +22,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
+
+import static com.bandwidth.sdk.xml.examples.util.PropertiesReader.CatapultProperties.CallOutgoingNumber;
+import static com.bandwidth.sdk.xml.examples.util.PropertiesReader.CatapultProperties.MessageIncomingNumber;
 
 /**
  * This BaML app is a callback event server for the Bandwidth App Platform SDK.
@@ -36,14 +39,8 @@ public class CallMeBackServlet extends HttpServlet {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS");
 
-    // This would be replaced by a db to lookup give a from number
-    // Alternatively you can set this in the environment variable
-    // BANDWIDTH_APPPLATFORM_OUTGOING_NUMBER
-    private static final String outgoingNumber = System.getenv("BANDWIDTH_OUTGOING_NUMBER");
-
-    private static final String messageRecipientNumber = System.getenv("BANDWIDTH_MESSAGE_RECIPIENT_NUMBER");
-
     private static final Map<String, SmsEvent> mapOfSmsCallbacks = new HashMap<>();
+    private static final PropertiesReader properties = new PropertiesReader();
 
     private final Map<String, RouteHandler> getRoutes = new HashMap<>();
     private final Map<String, RouteHandler> postRoutes = new HashMap<>();
@@ -66,7 +63,7 @@ public class CallMeBackServlet extends HttpServlet {
         logger.fine(String.format("Routing path: [%s]", path));
 
         RouteHandler handler = postRoutes.get(path);
-        if(handler == null) {
+        if (handler == null) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().write("Cannot do GET on " + path);
         } else {
@@ -82,7 +79,7 @@ public class CallMeBackServlet extends HttpServlet {
         logger.fine(String.format("Routing path: [%s]", path));
 
         RouteHandler handler = getRoutes.get(path);
-        if(handler == null) {
+        if (handler == null) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().write("Cannot do GET on " + path);
         } else {
@@ -104,11 +101,13 @@ public class CallMeBackServlet extends HttpServlet {
             Map<String, String[]> paramsMap = req.getParameterMap();
 
             logger.finest(paramsMap.toString());
-            if(paramsMap == null || paramsMap.isEmpty()) {
-                // TODO print error
-                return;
-            }
             try {
+                if (paramsMap == null || paramsMap.isEmpty()) {
+                    resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    resp.getWriter().write("This endpoint does not take no parameters.");
+                    return;
+                }
+
                 Response response = new Response();
 
                 String from = paramsMap.get("from")[0];
@@ -118,7 +117,10 @@ public class CallMeBackServlet extends HttpServlet {
                 SpeakSentence absentSpeech = new SpeakSentence("I'm currently on vacation, I'll be back soon.",
                         "paul", "male", "en");
 
-                SendMessage sendMessage = new SendMessage(outgoingNumber, messageRecipientNumber, message);
+                String messageFrom = properties.getCatapultProperty(CallOutgoingNumber);
+                String messageTo = properties.getCatapultProperty(MessageIncomingNumber);
+
+                SendMessage sendMessage = new SendMessage(messageFrom, messageTo, message);
                 sendMessage.setStatusCallbackUrl("/callback");
 
                 SpeakSentence thankYouSpeech = new SpeakSentence("Thank you for your call.",
@@ -152,7 +154,7 @@ public class CallMeBackServlet extends HttpServlet {
             logger.finest(body);
             try {
                 Event event = EventBase.createEventFromString(body);
-                if(event instanceof SmsEvent) {
+                if (event instanceof SmsEvent) {
                     SmsEvent sms = (SmsEvent) event;
                     mapOfSmsCallbacks.put(sms.getId(), sms);
                 } else {
@@ -177,14 +179,14 @@ public class CallMeBackServlet extends HttpServlet {
             StringBuilder builder = new StringBuilder();
 
             builder.append("<h3>Message callbacks:</h3>");
-            for(Map.Entry<String, SmsEvent> entry : mapOfSmsCallbacks.entrySet()) {
+            for (Map.Entry<String, SmsEvent> entry : mapOfSmsCallbacks.entrySet()) {
                 builder.append(entry.getKey()).append(":").append("<ul>");
                 Map<String, Object> jsonMap = entry.getValue().toMap();
-                for(Map.Entry<String, Object> jsonEntry : jsonMap.entrySet()) {
+                for (Map.Entry<String, Object> jsonEntry : jsonMap.entrySet()) {
                     builder
-                        .append("<li>")
-                        .append(jsonEntry.getKey()).append(":").append(jsonEntry.getValue())
-                        .append("</li>");
+                            .append("<li>")
+                            .append(jsonEntry.getKey()).append(":").append(jsonEntry.getValue())
+                            .append("</li>");
                 }
                 builder.append("</ul>");
             }

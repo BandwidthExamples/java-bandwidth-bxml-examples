@@ -6,6 +6,8 @@ import com.bandwidth.sdk.xml.Response;
 import com.bandwidth.sdk.xml.elements.Hangup;
 import com.bandwidth.sdk.xml.elements.SpeakSentence;
 import com.bandwidth.sdk.xml.elements.Transfer;
+import com.bandwidth.sdk.xml.examples.util.ExamplesUtil;
+import com.bandwidth.sdk.xml.examples.util.PropertiesReader;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,9 +17,12 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.bandwidth.sdk.xml.examples.util.PropertiesReader.CatapultProperties.CallIncomingNumber;
+import static com.bandwidth.sdk.xml.examples.util.PropertiesReader.CatapultProperties.CallOutgoingNumber;
+
 public class TransferServlet extends HttpServlet {
-    public static final Logger logger = Logger
-            .getLogger(TransferServlet.class.getName());
+    private static final Logger logger = Logger.getLogger(TransferServlet.class.getName());
+    private static final PropertiesReader properties = new PropertiesReader();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -27,8 +32,11 @@ public class TransferServlet extends HttpServlet {
         try {
             Response response = new Response();
 
+            String from = properties.getCatapultProperty(CallOutgoingNumber);
+            String to = properties.getCatapultProperty(CallIncomingNumber);
+
             SpeakSentence speakSentence = new SpeakSentence("Transferring your call, please wait.", "paul", "male", "en_US");
-            Transfer transfer = new Transfer("+15302987472", "+12134711336");
+            Transfer transfer = new Transfer(from, to);
             SpeakSentence speakSentenceWithinTransfer =
                     new SpeakSentence("Inner speak sentence.", "paul", "male", "en_US");
             transfer.setSpeakSentence(speakSentenceWithinTransfer);
