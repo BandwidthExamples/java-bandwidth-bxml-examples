@@ -8,3 +8,4 @@ repo
 api-examples/bandwidth-sdk-examples.iml
 examples.iml
 xml-examples/bandwidth-xml-examples.iml
+.idea
