@@ -53,4 +53,24 @@
 		<servlet-name>CallMeBack</servlet-name>
 		<url-pattern>/callMeBack/*</url-pattern>
 	</servlet-mapping>
+
+    <servlet>
+        <servlet-name>Record</servlet-name>
+        <servlet-class>com.bandwidth.sdk.xml.examples.RecordServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Record</servlet-name>
+        <url-pattern>/record</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RecordComplete</servlet-name>
+        <servlet-class>com.bandwidth.sdk.xml.examples.RecordCompleteServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>RecordComplete</servlet-name>
+        <url-pattern>/recordComplete</url-pattern>
+    </servlet-mapping>
 </web-app>
