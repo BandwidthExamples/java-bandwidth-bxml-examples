@@ -102,7 +102,7 @@ Step 7. Verify that the app is successfully deployed
 	
 	tail -f /var/log/tomcat7/catalina.out 
 
-Now Verify the app is running - in a browswer type the url <path to AWS ec2 instance>/bandwidth-sdk-examples-1.0-SNAPSHOT
+Now Verify the app is running - in a browser type the url <path to AWS ec2 instance>/bandwidth-sdk-examples-1.0-SNAPSHOT
 
 To setup the phone number see the Routing the Phone Number section below.
 

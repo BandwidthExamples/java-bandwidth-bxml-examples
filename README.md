@@ -20,10 +20,9 @@ Building the Example apps
 First we want to clone the repo and build the app
 
 	git clone 	https://github.com/bandwidthcom/java-bandwidth-examples.git
-	cd java-bandwidth-examples
 	mvn clean install
 
-Two separate and independent war file will be generated for project:
+Two separate and independent war files will be generated for project:
 
 api-examples
 xml-examples
