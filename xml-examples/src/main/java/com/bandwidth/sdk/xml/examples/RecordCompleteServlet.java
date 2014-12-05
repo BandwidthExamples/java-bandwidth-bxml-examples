@@ -28,6 +28,9 @@ public class RecordCompleteServlet extends HttpServlet {
 
             String recordingUri = req.getParameter("recordingUri");
             String terminatingDigits = req.getParameter("terminatingDigits");
+            if (terminatingDigits != null) {
+                terminatingDigits = terminatingDigits.replace("", " ").trim();
+            }
             String startTime = req.getParameter("startTime");
             String endTime = req.getParameter("endTime");
 
@@ -36,7 +39,7 @@ public class RecordCompleteServlet extends HttpServlet {
             SpeakSentence speakSeq2 = new SpeakSentence("terminatingDigits: " + terminatingDigits, "paul", "male", "en_US");
             SpeakSentence speakSeq3 = new SpeakSentence("startTime: " + startTime, "paul", "male", "en_US");
             SpeakSentence speakSeq4 = new SpeakSentence("endTime: " + endTime, "paul", "male", "en_US");
-            SpeakSentence goodbye = new SpeakSentence("endTime: " + endTime, "paul", "male", "en_US");
+            SpeakSentence goodbye = new SpeakSentence("Goodbye!", "paul", "male", "en_US");
 
             Hangup hangup = new Hangup();
 
