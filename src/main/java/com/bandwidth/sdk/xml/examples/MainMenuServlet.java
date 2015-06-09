@@ -66,7 +66,7 @@ public class MainMenuServlet extends HttpServlet {
 	}
 
     @XmlRootElement(name = "Redirect")
-    private class MyRedirect implements Elements {
+    class MyRedirect implements Elements {
 
         private String requestUrl;
         private Integer requestUrlTimeout;
@@ -108,7 +108,7 @@ public class MainMenuServlet extends HttpServlet {
         public String toString() {
             return "Redirect{" +
                     "requestUrl='" + requestUrl + '\'' +
-                    ", timeout=" + requestUrlTimeout +
+                    ", requestUrlTimeout=" + requestUrlTimeout +
                     '}';
         }
     }
