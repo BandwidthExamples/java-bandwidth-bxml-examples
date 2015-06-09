@@ -27,7 +27,7 @@ public class TransferServlet extends HttpServlet {
             Response response = new Response();
 
             SpeakSentence speakSentence = new SpeakSentence("Transferring your call, please wait.", "paul", "male", "en_US");
-            Transfer transfer = new Transfer("+15302987472", "+12134711336");
+            Transfer transfer = new Transfer("+13032288849", "+12523258243");
             SpeakSentence speakSentenceWithinTransfer =
                     new SpeakSentence("Inner speak sentence.", "paul", "male", "en_US");
             transfer.setSpeakSentence(speakSentenceWithinTransfer);
