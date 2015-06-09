@@ -24,6 +24,7 @@ import com.bandwidth.sdk.exception.XMLInvalidAttributeException;
 import com.bandwidth.sdk.exception.XMLInvalidTagContentException;
 import com.bandwidth.sdk.exception.XMLMarshallingException;
 import com.bandwidth.sdk.xml.Response;
+import com.bandwidth.sdk.xml.elements.Elements;
 import com.bandwidth.sdk.xml.elements.PlayAudio;
 import com.bandwidth.sdk.xml.elements.Redirect;
 import com.bandwidth.sdk.xml.elements.SpeakSentence;
@@ -64,25 +65,52 @@ public class MainMenuServlet extends HttpServlet {
 
 	}
 
-    private class MyRedirect extends Redirect {
-        int requestUrlTimeout;
+    @XmlRootElement(name = "Redirect")
+    private class MyRedirect implements Elements {
 
-        public MyRedirect(final String requestUrl, final int requestUrlTimeout) throws XMLInvalidAttributeException{
-            super(requestUrl, requestUrlTimeout);
-            this.requestUrlTimeout = requestUrlTimeout;
+        private String requestUrl;
+        private Integer requestUrlTimeout;
+
+        public MyRedirect() {
+            super();
         }
 
-        @XmlAttribute(name="requestUrlTimeout", required=true)
+        public MyRedirect(final String requestUrl, final int requestUrlTimeout) throws XMLInvalidAttributeException {
+            setRequestUrl(requestUrl);
+            setRequestUrlTimeout(requestUrlTimeout);
+        }
+
+        @XmlAttribute(name = "requestUrl", required = true)
+        public String getRequestUrl() {
+            return requestUrl;
+        }
+
+        public void setRequestUrl(final String requestUrl) throws XMLInvalidAttributeException {
+            if ((requestUrl == null) || (requestUrl.trim().isEmpty())) {
+                throw new XMLInvalidAttributeException("requestUrl mustn't not be empty or null");
+            }
+            this.requestUrl = requestUrl;
+        }
+
+        @XmlAttribute(name = "requestUrlTimeout", required = true)
         public int getRequestUrlTimeout() {
             return requestUrlTimeout;
+        }
+
+        public void setRequestUrlTimeout(final int timeout) throws XMLInvalidAttributeException {
+            if (timeout <= 0) {
+                throw new XMLInvalidAttributeException("timeout must be greater than 0");
+            }
+            this.requestUrlTimeout = timeout;
         }
 
         @Override
         public String toString() {
             return "Redirect{" +
-                    "requestUrl='" + getRequestUrl() + "\'" +
-                    ", requestUrlTimeout=" + requestUrlTimeout +
-                    "}";
+                    "requestUrl='" + requestUrl + '\'' +
+                    ", timeout=" + requestUrlTimeout +
+                    '}';
         }
     }
+
 }
