@@ -49,7 +49,7 @@ public class MainMenuServlet extends HttpServlet {
                     new SpeakSentence("Redirecting your call, please wait.", "paul", "male", "en");
 
             PlayAudio playAudio = new PlayAudio("http://www.mediacollege.com/audio/tone/files/100Hz_44100Hz_16bit_05sec.mp3");
-            MyRedirect redirect = new MyRedirect("/transfer", 10000);
+            Redirect redirect = new Redirect("/transfer", 10000);
 
             response.add(speakSentence);
             response.add(playAudio);
@@ -64,53 +64,4 @@ public class MainMenuServlet extends HttpServlet {
         }
 
 	}
-
-    @XmlRootElement(name = "Redirect")
-    class MyRedirect implements Elements {
-
-        private String requestUrl;
-        private Integer requestUrlTimeout;
-
-        public MyRedirect() {
-            super();
-        }
-
-        public MyRedirect(final String requestUrl, final int requestUrlTimeout) throws XMLInvalidAttributeException {
-            setRequestUrl(requestUrl);
-            setRequestUrlTimeout(requestUrlTimeout);
-        }
-
-        @XmlAttribute(name = "requestUrl", required = true)
-        public String getRequestUrl() {
-            return requestUrl;
-        }
-
-        public void setRequestUrl(final String requestUrl) throws XMLInvalidAttributeException {
-            if ((requestUrl == null) || (requestUrl.trim().isEmpty())) {
-                throw new XMLInvalidAttributeException("requestUrl mustn't not be empty or null");
-            }
-            this.requestUrl = requestUrl;
-        }
-
-        @XmlAttribute(name = "requestUrlTimeout", required = true)
-        public int getRequestUrlTimeout() {
-            return requestUrlTimeout;
-        }
-
-        public void setRequestUrlTimeout(final int timeout) throws XMLInvalidAttributeException {
-            if (timeout <= 0) {
-                throw new XMLInvalidAttributeException("timeout must be greater than 0");
-            }
-            this.requestUrlTimeout = timeout;
-        }
-
-        @Override
-        public String toString() {
-            return "Redirect{" +
-                    "requestUrl='" + requestUrl + '\'' +
-                    ", requestUrlTimeout=" + requestUrlTimeout +
-                    '}';
-        }
-    }
-
 }
