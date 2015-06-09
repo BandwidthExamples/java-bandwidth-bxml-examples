@@ -27,6 +27,8 @@ import com.bandwidth.sdk.xml.Response;
 import com.bandwidth.sdk.xml.elements.PlayAudio;
 import com.bandwidth.sdk.xml.elements.Redirect;
 import com.bandwidth.sdk.xml.elements.SpeakSentence;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.json.simple.JSONObject;
 
 import com.bandwidth.sdk.model.*;
@@ -46,7 +48,7 @@ public class MainMenuServlet extends HttpServlet {
                     new SpeakSentence("Redirecting your call, please wait.", "paul", "male", "en");
 
             PlayAudio playAudio = new PlayAudio("http://www.mediacollege.com/audio/tone/files/100Hz_44100Hz_16bit_05sec.mp3");
-            Redirect redirect = new Redirect("/transfer", 10000);
+            MyRedirect redirect = new MyRedirect("/transfer", 10000);
 
             response.add(speakSentence);
             response.add(playAudio);
@@ -61,4 +63,26 @@ public class MainMenuServlet extends HttpServlet {
         }
 
 	}
+
+    private class MyRedirect extends Redirect {
+        int requestUrlTimeout;
+
+        public MyRedirect(final String requestUrl, final int requestUrlTimeout) throws XMLInvalidAttributeException{
+            super(requestUrl, requestUrlTimeout);
+            this.requestUrlTimeout = requestUrlTimeout;
+        }
+
+        @XmlAttribute(name="requestUrlTimeout", required=true)
+        public int getRequestUrlTimeout() {
+            return requestUrlTimeout;
+        }
+
+        @Override
+        public String toString() {
+            return "Redirect{" +
+                    "requestUrl='" + getRequestUrl() + "\'" +
+                    ", requestUrlTimeout=" + requestUrlTimeout +
+                    "}";
+        }
+    }
 }
