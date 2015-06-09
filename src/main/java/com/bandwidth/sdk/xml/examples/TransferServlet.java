@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class tTransferServlet extends HttpServlet {
+public class TransferServlet extends HttpServlet {
 	public static final Logger logger = Logger
 			.getLogger(TransferServlet.class.getName());
 
