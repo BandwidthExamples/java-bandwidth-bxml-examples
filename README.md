@@ -1,5 +1,9 @@
-java-bandwidth-xml-examples
-===========================
+<div align="center">
+
+# Java Bandwidth XML Examples
+
+<a href="http://dev.bandwidth.com"><img src="https://s3.amazonaws.com/bwdemos/BW-VMP.png"/></a>
+</div>
 
 This project shows how a two step flow works in BAML technology.
 
